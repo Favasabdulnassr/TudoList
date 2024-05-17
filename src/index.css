@@ -119,7 +119,7 @@ li{
   width: 500px;
   overflow-x: scroll;
 }
-.delete-button, .move-button, .{
+.delete-button, .move-button{
   padding: 8px 12px;
   font-size: 1.4rem;
   margin-left: 10px;
@@ -134,4 +134,5 @@ li{
   font-size: 1.4rem;
   margin-left: 10px;
 }
+
 

@@ -1,10 +1,14 @@
-import React, {useState} from "react"
+import React, {useState} from "react";
+import './ToDolist.css';
 
 
 function ToDoList(){
 
     const [tasks,setTasks] = useState([]);
     const [newTask,setNewTask] = useState("");
+    const [isIndex,setIsIndex] = useState(false);
+    const [currentTaskIndex,setCurrentTaskIndex] = useState(null);
+    const [editTaskText,setEditTaskText] = useState("");
     
      
     function handleInputChange(event){
@@ -58,6 +62,36 @@ function ToDoList(){
     }
 
 
+   function editTask(index){
+
+      setIsIndex(true);
+      setCurrentTaskIndex(index)
+      setEditTaskText(tasks[index])
+
+
+   }
+    
+
+   function saveTask(){
+
+      if(editTaskText.trim() !== "") {
+
+         var updatedTasks = tasks.map((task,index) => 
+            
+            index === currentTaskIndex ? editTaskText :task
+         
+         );
+      }
+
+      setTasks(updatedTasks);
+      setIsIndex(false);
+      setCurrentTaskIndex(null);
+      setEditTaskText("");
+
+
+   } 
+
+
    
     return(<div className="to-do-list">
 
@@ -84,35 +118,73 @@ function ToDoList(){
           <ol>
             {tasks.map((task,index)=>
                <li key={index}>
-                  <span className="text">{task}</span>
-                  <button
-                     className="delete-button"
-                     onClick={ () => deleteTask(index)}
-                  >
-                    Delete
-                  </button>
+                           {isIndex && currentTaskIndex === index?
+                           (
+                              <div>
+                                 <input
+                                    type="text"
+                                    value={editTaskText}
+                                    onChange={ (e)=>setEditTaskText(e.target.value)
+                                              
+                                    }       
+                                 />
+
+                                 <button className="save-button"
+                                    onClick={saveTask}   
+                                 >
+                                    Save
+                                 </button>  
+                              </div>
 
 
-                  <button
-                     className="move-button"
-                     onClick={ () => moveTaskUp(index)}
-                  >
-                   Up
-                  </button>
+                           ):(
+                              
 
-                  <button
-                     className="move-button"
-                     onClick={ () => moveTaskDown(index)}
-                  >
-                   Down
-                  </button>
+                        
 
-                
+                        <div>
+
+                           <span className="text">{task}</span>
+
+                           <button className="edit-button"
+
+                           onClick={ () => editTask(index)   }
+                           
+                           >
+
+                              Edit
+                           </button>
+
+                           <button
+                              className="delete-button"
+                              onClick={ () => deleteTask(index)}
+                           >
+                           Delete
+                           </button>
 
 
-               </li>
+                           <button
+                              className="move-button"
+                              onClick={ () => moveTaskUp(index)}
+                           >
+                           Up
+                           </button>
+
+                           <button
+                              className="move-button"
+                              onClick={ () => moveTaskDown(index)}
+                           >
+                           Down
+                           </button>
+
+                        
+                        </div>
 
 
+                     )}
+
+            </li> 
+             
         
                 )}
           </ol>
